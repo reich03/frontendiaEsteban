@@ -17,6 +17,7 @@
         height: 100vh;
         margin: 0;
       }
+
       #messages {
         background-color: #ffffff;
         color: #333;
@@ -29,25 +30,31 @@
         scrollbar-width: thin;
         scrollbar-color: #888 #f1f1f1;
       }
+
       #messages::-webkit-scrollbar {
         width: 8px;
       }
+
       #messages::-webkit-scrollbar-track {
         background: #f1f1f1;
         border-radius: 10px;
       }
+
       #messages::-webkit-scrollbar-thumb {
         background: #888;
         border-radius: 10px;
       }
+
       #messages::-webkit-scrollbar-thumb:hover {
         background: #555;
       }
+
       .bar {
         height: 5px;
         background-color: #333;
         margin-bottom: 10px;
       }
+
       .message {
         display: flex;
         align-items: center;
@@ -56,7 +63,9 @@
         border-radius: 18px;
         background-color: #ffd700;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        width: 70%;
       }
+
       .user,
       .bot,
       .error,
@@ -66,6 +75,19 @@
         display: flex;
         align-items: center;
       }
+
+      .bot,
+      .error,
+      .default,
+      .initi,
+      .energia {
+        justify-content: flex-start;
+      }
+
+      .user {
+        justify-content: flex-end;
+      }
+
       .bot .message-content,
       .error .message-content,
       .initi .message-content,
@@ -74,15 +96,18 @@
         background-color: #e0e0e0;
         color: black;
       }
+
       .user .message-content {
         margin-right: 10px;
         background-color: #4caf50;
         color: white;
       }
+
       img.icon {
-        height: 40px;
-        width: 40px;
+        height: 50px;
+        width: 50px;
       }
+
       .header {
         display: flex;
         justify-content: space-between;
@@ -113,7 +138,7 @@
               if (!messageContainer.hasChildNodes()) {
                 const welcomeMessageHTML = `
             <div class="bot">
-              <img src="../static/6134346.png" alt="bot" class="icon">
+              <img src="../static/ICONO_NEGRO.png" alt="bot" class="icon">
               <div class="message message-content">¡Hola! Bienvenido a META. ¿Cómo puedo ayudarte hoy?</div>
             </div>
           `;
@@ -131,7 +156,7 @@
                   msg.includes("<strong>Respuesta de Meta:</strong>")
                 ) {
                   messageType = "bot";
-                  iconPath = "../static/6134346.png";
+                  iconPath = "../static/ICONO_NEGRO.png";
                   msg = msg
                     .replace("<strong>Meta response:</strong>", "Meta:")
                     .replace("<strong>Respuesta de Meta:</strong>", "Meta:");
@@ -146,7 +171,7 @@
                   );
                 } else {
                   messageType = "default";
-                  iconPath = "../static/6134346.png"; 
+                  iconPath = "../static/ICONO_AMARILLO.png";
                 }
                 const messageHTML = `
             <div class="${messageType}">
