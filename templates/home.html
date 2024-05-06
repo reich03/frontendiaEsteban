@@ -1,128 +1,166 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>META</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background-color: #E30614;
-            color: white;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            margin: 0;
-        }
-        #messages {
-            background-color: #ffffff;
-            color: #333;
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            scrollbar-width: thin;
-            scrollbar-color: #888 #f1f1f1;
-        }
-        #messages::-webkit-scrollbar {
-            width: 8px;
-        }
-        #messages::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        #messages::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 10px;
-        }
-        #messages::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-        .bar {
-            height: 5px;
-            background-color: #333;
-            margin-bottom: 10px;
-        }
-        .message {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 18px;
-            background-color: #ffd700;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        .user, .bot, .error {
-            display: flex;
-            align-items: center;
-        }
-        .bot .message-content, .error .message-content {
-            margin-left: 10px;
-            background-color: #e0e0e0;
-            color: black;
-        }
-        .user .message-content {
-            margin-right: 10px;
-            background-color: #4caf50;
-            color: white;
-        }
-        img.icon {
-            height: 40px;
-            width: 40px;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: #222; 
-        }
+      body {
+        background-color: #e30614;
+        color: white;
+        font-family: "Roboto", sans-serif;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+      }
+      #messages {
+        background-color: #ffffff;
+        color: #333;
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        scrollbar-width: thin;
+        scrollbar-color: #888 #f1f1f1;
+      }
+      #messages::-webkit-scrollbar {
+        width: 8px;
+      }
+      #messages::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+      #messages::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+      }
+      #messages::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+      .bar {
+        height: 5px;
+        background-color: #333;
+        margin-bottom: 10px;
+      }
+      .message {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 18px;
+        background-color: #ffd700;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      .user,
+      .bot,
+      .error,
+      .initi,
+      .energia,
+      .default {
+        display: flex;
+        align-items: center;
+      }
+      .bot .message-content,
+      .error .message-content,
+      .initi .message-content,
+      .default .message-content {
+        margin-left: 10px;
+        background-color: #e0e0e0;
+        color: black;
+      }
+      .user .message-content {
+        margin-right: 10px;
+        background-color: #4caf50;
+        color: white;
+      }
+      img.icon {
+        height: 40px;
+        width: 40px;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: #222;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="header">
-        <h1>META</h1>
-        <img src="{{ url_for('static', filename='unimeta_universidad_villavicenciofw.png') }}" alt="Logo UNIMETA">
+      <h1>META</h1>
+      <img
+        src="{{ url_for('static', filename='unimeta_universidad_villavicenciofw.png') }}"
+        alt="Logo UNIMETA"
+      />
     </div>
     <div class="bar"></div>
     <div id="messages"></div>
 
     <script>
-        function fetchMessages() {
-            fetch('/messages')
-            .then(response => response.json())
-            .then(data => {
-                if (data.messages.length > 0) {
-                    var messageContainer = document.getElementById('messages');
-                    messageContainer.innerHTML = '';
-                    data.messages.forEach((msg) => {
-                        let messageType;
-                        let iconPath;
-                        if (msg.includes('<strong>Meta heard:</strong>')) {
-                            messageType = 'user';
-                            iconPath = '../static/192801390-cara-brutal-hombre-pixel-art-gigachad-ilustración-vectorial-de-8-bits.jpg'; 
-                        } else if (msg.includes('<strong>Meta response:</strong>') || msg.includes('<strong>Respuesta de Meta:</strong>')) {
-                            messageType = 'bot';
-                            iconPath = '../static/6134346.png'; 
-                        } else if (msg.includes('<strong>Error al escuchar voz:</strong>')) {
-                            messageType = 'error';
-                            iconPath = '../static/682010.png'; 
-                        }
-                        const messageHTML = `
-                            <div class="${messageType}">
-                                <img src="${iconPath}" alt="${messageType}" class="icon">
-                                <div class="message message-content">${msg}</div>
-                            </div>
-                        `;
-                        messageContainer.innerHTML += messageHTML;
-                    });
-                    messageContainer.scrollTop = messageContainer.scrollHeight;
+      function fetchMessages() {
+        fetch("/messages")
+          .then((response) => response.json())
+          .then((data) => {
+            var messageContainer = document.getElementById("messages");
+            if (data.messages.length > 0 || !messageContainer.hasChildNodes()) {
+              if (!messageContainer.hasChildNodes()) {
+                const welcomeMessageHTML = `
+            <div class="bot">
+              <img src="../static/6134346.png" alt="bot" class="icon">
+              <div class="message message-content">¡Hola! Bienvenido a META. ¿Cómo puedo ayudarte hoy?</div>
+            </div>
+          `;
+                messageContainer.innerHTML += welcomeMessageHTML;
+              }
+              data.messages.forEach((msg) => {
+                let messageType, iconPath;
+                if (msg.includes("<strong>Meta heard:</strong>")) {
+                  messageType = "user";
+                  iconPath =
+                    "../static/192801390-cara-brutal-hombre-pixel-art-gigachad-ilustración-vectorial-de-8-bits.jpg";
+                  msg = msg.replace("<strong>Meta heard:</strong>", "");
+                } else if (
+                  msg.includes("<strong>Meta response:</strong>") ||
+                  msg.includes("<strong>Respuesta de Meta:</strong>")
+                ) {
+                  messageType = "bot";
+                  iconPath = "../static/6134346.png";
+                  msg = msg
+                    .replace("<strong>Meta response:</strong>", "Meta:")
+                    .replace("<strong>Respuesta de Meta:</strong>", "Meta:");
+                } else if (
+                  msg.includes("<strong>Error al escuchar voz:</strong>")
+                ) {
+                  messageType = "error";
+                  iconPath = "../static/682010.png";
+                  msg = msg.replace(
+                    "<strong>Error al escuchar voz:</strong>",
+                    ""
+                  );
+                } else {
+                  messageType = "default";
+                  iconPath = "../static/6134346.png"; 
                 }
-            });
-        }
-        setInterval(fetchMessages, 1000); // Actualizar cada segundo
+                const messageHTML = `
+            <div class="${messageType}">
+              <img src="${iconPath}" alt="${messageType}" class="icon">
+              <div class="message message-content">${msg}</div>
+            </div>
+          `;
+                messageContainer.innerHTML += messageHTML;
+              });
+              messageContainer.scrollTop = messageContainer.scrollHeight;
+            }
+          });
+      }
+      setInterval(fetchMessages, 1000);
     </script>
-</body>
+  </body>
 </html>
