@@ -182,17 +182,44 @@
               messageContainer.clientHeight;
 
             messages.slice(lastMessageIndex).forEach((msg) => {
-              const messageType = msg.type === "user" ? "user" : "bot";
+              let messageType = msg.type === "user" ? "user" : "bot";
+              let messageText = msg.message;
+
+              if (
+                messageText.includes(
+                  "<strong>Pregunta enviada a Meta:</strong>"
+                )
+              ) {
+                messageType = "user";
+                messageText = messageText.replace(
+                  "<strong>Pregunta enviada a Meta:</strong>",
+                  ""
+                );
+              } else if (messageText.includes("<strong>Meta heard:</strong>")) {
+                messageType = "bot";
+                messageText = messageText.replace(
+                  "<strong>Meta heard:</strong>",
+                  ""
+                );
+              } else if (
+                messageText.includes("<strong>Respuesta de Meta:</strong>")
+              ) {
+                messageText = messageText.replace(
+                  "<strong>Respuesta de Meta:</strong>",
+                  ""
+                );
+              }
+
               const iconPath =
                 messageType === "user"
                   ? "../static/Componente 3 – 1.png"
                   : "../static/ICONO_NEGRO.png";
               const messageHTML = `
-            <div class="${messageType}">
-                <img src="${iconPath}" alt="${messageType}" class="icon">
-                <div class="message message-content">${msg.message}</div>
-            </div>
-        `;
+                    <div class="${messageType}">
+                        <img src="${iconPath}" alt="${messageType}" class="icon">
+                        <div class="message message-content">${messageText}</div>
+                    </div>
+                `;
               messageContainer.innerHTML += messageHTML;
             });
 
