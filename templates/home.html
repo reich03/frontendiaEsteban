@@ -172,30 +172,34 @@
       let lastMessageIndex = 0;
 
       function fetchMessages() {
-        fetch("/messages")
-          .then((response) => response.json())
-          .then((data) => {
-            const messages = data.messages;
-            const messageContainer = document.getElementById("messages");
-            messages.slice(lastMessageIndex).forEach((msg) => {
-              const messageType = msg.type === "user" ? "user" : "bot";
-              const iconPath =
-                messageType === "user"
-                  ? "../static/Componente 3 – 1.png"
-                  : "../static/ICONO_NEGRO.png";
-              const messageHTML = `
-                <div class="${messageType}">
-                    <img src="${iconPath}" alt="${messageType}" class="icon">
-                    <div class="message message-content">${msg.message}</div>
-                </div>
-            `;
-              messageContainer.innerHTML += messageHTML;
-            });
-            lastMessageIndex = messages.length;
-            messageContainer.scrollTop = messageContainer.scrollHeight;
-          });
+        const messageContainer = document.getElementById("messages");
+        const atBottom =
+          messageContainer.scrollHeight - messageContainer.scrollTop ===
+          messageContainer.clientHeight;
+
+        messages.slice(lastMessageIndex).forEach((msg) => {
+          const messageType = msg.type === "user" ? "user" : "bot";
+          const iconPath =
+            messageType === "user"
+              ? "../static/Componente 3 – 1.png"
+              : "../static/ICONO_NEGRO.png";
+          const messageHTML = `
+            <div class="${messageType}">
+                <img src="${iconPath}" alt="${messageType}" class="icon">
+                <div class="message message-content">${msg.message}</div>
+            </div>
+        `;
+          messageContainer.innerHTML += messageHTML;
+        });
+
+        lastMessageIndex = messages.length;
+
+        if (atBottom) {
+          messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
       }
-      setInterval(fetchMessages, 200);
+
+      setInterval(fetchMessages, 1000);
 
       function sendMessage() {
         const messageText = document.getElementById("message-input").value;
